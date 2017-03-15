@@ -25,11 +25,11 @@ class ObjectLoader:
 				ue.log(data)
 				for obj in data:
 					objclass = ue.find_class(obj["type"])
-					ue.log(str(type(objclass))+str(objclass)+"="+obj["json"])
-					objinst = self.uobject.actor_spawn(objclass, FVector(0, 0, 0),FRotator(0, 0, 90))
+					#ue.log(str(type(objclass))+str(objclass)+"="+obj["json"])
+					objinst = self.uobject.actor_spawn(objclass, FVector(0, 0, 0),FRotator(0, 0, 0))
 					jsonstr = obj["json"]
 					self.objects.append(objinst)
-					objinst.call_function("setJsonString",jsonstr)
+					objinst.call_function("loadjson",jsonstr)
 		ue.log("------------------")
 					
 		
@@ -38,7 +38,7 @@ class ObjectLoader:
 		
 	def add(self):
 		self.objects.append(self.pawn.get_property('whattoadd'))
-		ue.log(len(self.objects))
+		#ue.log(len(self.objects))
 		
 	def printall(self):
 		ue.log(len(self.objects))
@@ -46,7 +46,7 @@ class ObjectLoader:
 		with codecs.open(self.datapath,"w","utf-8") as f:
 			res = []
 			for obj in self.objects:
-				res.append({"type":obj.get_class().get_name(),"json":obj.getJsonString()[0]})
+				res.append({"type":obj.get_class().get_name(),"json":obj.savejson()[0]})
 				
 			f.write(json.dumps(res))
 		
